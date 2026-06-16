@@ -78,11 +78,13 @@ export default function BookingsPage() {
     try {
       const qs = status !== "all" ? `&status=${status}` : "";
       const [bRes, sRes] = await Promise.all([
-        api.get<{ bookings: Booking[]; total: number }>(`/api/professionals/bookings/admin?page=${p}&limit=15${qs}`),
+        api.get<any>(`/api/bookings?page=${p}&limit=15${qs}`),
         api.get<Stats>("/api/bookings/stats").catch(() => null),
       ]);
-      setBookings(bRes.bookings);
-      setTotalPages(Math.ceil((bRes.total || 0) / 15) || 1);
+      const list = bRes?.data ?? bRes?.bookings ?? [];
+      const total = bRes?.pagination?.total ?? bRes?.total ?? list.length;
+      setBookings(list);
+      setTotalPages(Math.ceil(total / 15) || 1);
       if (sRes) setStats(sRes);
     } catch (e: any) { showToast("❌ " + e.message); }
     finally { setLoading(false); }
@@ -238,11 +240,7 @@ export default function BookingsPage() {
                               {proTypes[b.professional?.type] || b.professional?.type}
                             </span>
                           </div>
-                          <div className="text-xs text-gray-500 mt-0.5">
-                            Demande de <strong className="font-mono">{b.user?.displayName}</strong>
-                            {b.user?.city ? ` · 📍 ${b.user.city}` : ""}
-                            {b.user?.age  ? ` · ${b.user.age} ans` : ""}
-                          </div>
+                          <div className="text-xs text-gray-400 mt-0.5 italic">Demande reçue</div>
                         </div>
                         <span className={`text-xs font-semibold border px-2.5 py-1 rounded-full flex-shrink-0 ${statusColors[b.status]}`}>
                           {statusLabels[b.status] || b.status}
@@ -311,21 +309,7 @@ export default function BookingsPage() {
                           </button>
                         )}
 
-                        {/* Marquer terminé */}
-                        {b.status === "confirmed" && (
-                          <button onClick={() => completeBooking(b)}
-                            className="px-3 py-1.5 text-xs font-semibold text-green-600 bg-green-50 hover:bg-green-100 rounded-xl transition">
-                            ✔ Marquer terminée
-                          </button>
-                        )}
 
-                        {/* Annuler (admin peut annuler pending ou confirmed) */}
-                        {(b.status === "pending" || b.status === "confirmed") && (
-                          <button onClick={() => { setCancelModal(b); setCancelNote(""); }}
-                            className="px-3 py-1.5 text-xs font-semibold text-red-500 bg-red-50 hover:bg-red-100 rounded-xl transition">
-                            ❌ Annuler
-                          </button>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -393,14 +377,14 @@ export default function BookingsPage() {
               Un email d&apos;annulation sera envoyé à l&apos;utilisateur. Le professionnel n&apos;est pas notifié par email.
             </p>
             <textarea value={cancelNote} onChange={e => setCancelNote(e.target.value)}
-              placeholder="Raison de l&apos;annulation (obligatoire)..." rows={3}
+              placeholder="Raison de l'annulation (obligatoire)..." rows={3}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-red-400 mb-4" />
             <div className="flex gap-3">
               <button onClick={() => setCancelModal(null)}
                 className="flex-1 py-2.5 border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50">Retour</button>
               <button onClick={cancelBooking} disabled={!cancelNote.trim() || saving}
                 className="flex-1 py-2.5 bg-red-500 hover:bg-red-600 disabled:bg-gray-200 text-white rounded-xl text-sm font-semibold transition">
-                {saving ? "En cours..." : "Confirmer l&apos;annulation"}
+                {saving ? "En cours..." : "Confirmer l'annulation"}
               </button>
             </div>
           </div>
