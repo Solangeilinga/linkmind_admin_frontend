@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar   from "@/components/Sidebar";
@@ -30,11 +31,9 @@ const CURRENCIES = ["FCFA","EUR","USD","XOF"];
 
 const EMPTY_PRO = {
   firstName:"", lastName:"", type:"psychologist", city:"", country:"Burkina Faso",
-  address:"", phone:"", email:"", bio:"", sessionPrice:"", sessionDuration:"60", currency:"FCFA",
-  specialties:"", languages:"", photo:"",
-  isActive:true, isVerified:false,
+  phone:"", email:"", bio:"", sessionPrice:"", sessionDuration:"60", currency:"FCFA",
+  specialties:"", isActive:true, isVerified:false,
   isOnline:false, isInPerson:true, personalMeetingLink:"",
-  commissionRate:"0.10",
 };
 const EMPTY_SLOT   = { date:"", startTime:"09:00", endTime:"10:00" };
 const EMPTY_WEEKLY = { dayOfWeek:1, startTime:"09:00", endTime:"17:00", slotDuration:60 };
@@ -111,10 +110,8 @@ export default function ProfessionalsPage() {
     setEditing({
       ...p,
       specialties:     p.specialties?.join(", ") || "",
-      languages:       (p as any).languages?.join(", ") || "",
       sessionPrice:    String(p.sessionPrice||""),
       sessionDuration: String(p.sessionDuration||60),
-      commissionRate:  String((p as any).commissionRate||0.10),
     });
     setSlots(p.availableSlots || []);
     setWeekly(p.weeklyAvailability || []);
@@ -131,10 +128,8 @@ export default function ProfessionalsPage() {
     const payload = {
       ...editing,
       specialties:     editing.specialties ? editing.specialties.split(",").map((s:string)=>s.trim()).filter(Boolean) : [],
-      languages:       editing.languages   ? editing.languages.split(",").map((s:string)=>s.trim()).filter(Boolean)   : [],
       sessionPrice:    editing.sessionPrice    ? Number(editing.sessionPrice)    : undefined,
       sessionDuration: editing.sessionDuration ? Number(editing.sessionDuration) : 60,
-      commissionRate:  editing.commissionRate  ? Number(editing.commissionRate)  : 0.10,
     };
     try {
       if (modal==="create") {
@@ -336,7 +331,6 @@ export default function ProfessionalsPage() {
                           <div>
                             <div className="font-semibold text-gray-900">{pro.firstName} {pro.lastName}</div>
                             <div className="text-xs text-gray-400">{pro.email||"—"}</div>
-                            {(pro as any).address && <div className="text-xs text-gray-300 truncate max-w-[160px]">📍 {(pro as any).address}</div>}
                           </div>
                         </div>
                       </td>
@@ -493,22 +487,6 @@ export default function ProfessionalsPage() {
                     </div>
                   </div>
 
-                  {/* Adresse + Pays */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5">Adresse du cabinet</label>
-                      <input value={editing.address||""} onChange={e=>setEditing((p:any)=>({...p,address:e.target.value}))}
-                        placeholder="Ex: Av. Kwame Nkrumah, Secteur 4"
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5">Pays</label>
-                      <input value={editing.country||""} onChange={e=>setEditing((p:any)=>({...p,country:e.target.value}))}
-                        placeholder="Burkina Faso"
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-                    </div>
-                  </div>
-
                   {/* Email + Téléphone */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -563,36 +541,6 @@ export default function ProfessionalsPage() {
                     <input value={editing.specialties||""} onChange={e=>setEditing((p:any)=>({...p,specialties:e.target.value}))}
                       placeholder="Anxiété, Dépression, Gestion du stress…"
                       className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-                  </div>
-
-                  {/* Langues + Photo */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5">Langues parlées</label>
-                      <input value={editing.languages||""} onChange={e=>setEditing((p:any)=>({...p,languages:e.target.value}))}
-                        placeholder="Français, Mooré, Dioula…"
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5">URL photo (optionnel)</label>
-                      <input value={editing.photo||""} onChange={e=>setEditing((p:any)=>({...p,photo:e.target.value}))}
-                        placeholder="https://…/photo.jpg"
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-                    </div>
-                  </div>
-
-                  {/* Commission */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5">Taux commission LinkMind</label>
-                      <select value={editing.commissionRate||"0.10"} onChange={e=>setEditing((p:any)=>({...p,commissionRate:e.target.value}))}
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="0.05">5%</option>
-                        <option value="0.10">10% (défaut)</option>
-                        <option value="0.15">15%</option>
-                        <option value="0.20">20%</option>
-                      </select>
-                    </div>
                   </div>
 
                   {/* Canaux */}

@@ -371,7 +371,7 @@ export default function UsersPage() {
                 </div>
               </div>
               <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-700">
-                ℹ️ L'email sera considéré comme vérifié. L'utilisateur pourra se connecter immédiatement.
+                ℹ️ L&apos;email sera considéré comme vérifié. L&apos;utilisateur pourra se connecter immédiatement.
               </div>
             </div>
             <div className="flex gap-3 mt-5">
