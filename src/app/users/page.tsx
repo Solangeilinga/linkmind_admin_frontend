@@ -35,6 +35,12 @@ export default function UsersPage() {
   const [banReason,setBanReason] = useState("");
   const [acting,  setActing]  = useState(false);
   const [toast,   setToast]   = useState("");
+  const [createModal, setCreateModal] = useState(false);
+  const [createForm, setCreateForm] = useState({
+    email: "", password: "", anonymousAlias: "", age: "",
+    city: "", country: "", gender: "non_specifie"
+  });
+  const [creating, setCreating] = useState(false);
 
   const showToast = (msg: string, dur = 3000) => { setToast(msg); setTimeout(() => setToast(""), dur); };
 
@@ -67,6 +73,24 @@ export default function UsersPage() {
       await api.post(`/api/users/${user._id}/unban`, {});
       showToast("✅ Utilisateur débanni"); fetchUsers();
     } catch (e: any) { showToast("❌ " + e.message); }
+  };
+
+  const createUser = async () => {
+    if (!createForm.email || !createForm.password) {
+      showToast("❌ Email et mot de passe requis"); return;
+    }
+    setCreating(true);
+    try {
+      await api.post("/api/users", {
+        ...createForm,
+        age: createForm.age ? Number(createForm.age) : undefined,
+      });
+      showToast("✅ Utilisateur créé avec succès");
+      setCreateModal(false);
+      setCreateForm({ email: "", password: "", anonymousAlias: "", age: "", city: "", country: "", gender: "non_specifie" });
+      fetchUsers(1);
+    } catch (e: any) { showToast("❌ " + e.message); }
+    finally { setCreating(false); }
   };
 
   const filters: { key: Filter; label: string }[] = [
@@ -284,6 +308,86 @@ export default function UsersPage() {
           {toast}
         </div>
       )}
+      {/* Modal création utilisateur */}
+      {createModal && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 className="font-bold text-gray-900 mb-4">Créer un utilisateur</h2>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 mb-1">Email *</label>
+                <input type="email" value={createForm.email}
+                  onChange={e => setCreateForm(p => ({ ...p, email: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
+                  placeholder="email@exemple.com" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 mb-1">Mot de passe *</label>
+                <input type="password" value={createForm.password}
+                  onChange={e => setCreateForm(p => ({ ...p, password: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
+                  placeholder="Min. 6 caractères" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 mb-1">Pseudo anonyme</label>
+                <input type="text" value={createForm.anonymousAlias}
+                  onChange={e => setCreateForm(p => ({ ...p, anonymousAlias: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
+                  placeholder="Ex: LionCourageux" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Âge</label>
+                  <input type="number" value={createForm.age}
+                    onChange={e => setCreateForm(p => ({ ...p, age: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
+                    placeholder="22" min="13" max="120" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Genre</label>
+                  <select value={createForm.gender}
+                    onChange={e => setCreateForm(p => ({ ...p, gender: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30">
+                    <option value="non_specifie">Non spécifié</option>
+                    <option value="homme">Homme</option>
+                    <option value="femme">Femme</option>
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Ville</label>
+                  <input type="text" value={createForm.city}
+                    onChange={e => setCreateForm(p => ({ ...p, city: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
+                    placeholder="Ouagadougou" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Pays</label>
+                  <input type="text" value={createForm.country}
+                    onChange={e => setCreateForm(p => ({ ...p, country: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
+                    placeholder="Burkina Faso" />
+                </div>
+              </div>
+              <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-700">
+                ℹ️ L'email sera considéré comme vérifié. L'utilisateur pourra se connecter immédiatement.
+              </div>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <button onClick={() => setCreateModal(false)}
+                className="flex-1 py-2.5 border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50">
+                Annuler
+              </button>
+              <button onClick={createUser} disabled={creating}
+                className="flex-1 py-2.5 bg-[#77021D] text-white rounded-xl text-sm font-semibold hover:bg-[#5a0116] disabled:opacity-50">
+                {creating ? "Création..." : "Créer l'utilisateur"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </AuthGuard>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { clearSession, getAdmin, api } from "@/lib/api";
@@ -16,6 +15,7 @@ const NAV_ALL = [
   { href: "/challenges",    icon: "🏆", label: "Défis",            badge: null,       minRole: "admin"       },
   { href: "/professionals", icon: "👨‍⚕️", label: "Professionnels",  badge: null,       minRole: "admin"       },
   { href: "/ads",           icon: "📢", label: "Annonces",         badge: null,       minRole: "admin"       },
+  { href: "/database",      icon: "🗄️", label: "Base de données",   badge: null,       minRole: "admin"       },
   { href: "/reports",       icon: "📈", label: "Rapports",         badge: null,       minRole: "analyst"     },
   { href: "/settings",      icon: "⚙️", label: "Paramètres",       badge: null,       minRole: "analyst"     },
 ];
