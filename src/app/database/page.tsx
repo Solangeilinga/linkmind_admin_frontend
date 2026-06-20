@@ -257,7 +257,7 @@ export default function DatabasePage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Base de données contenu</h1>
               <p className="text-sm text-gray-500 mt-0.5">
-                Gérez le contenu affiché dans l'application LinkMind
+                Gérez le contenu affiché dans l&apos;application LinkMind
               </p>
             </div>
             <button
@@ -273,7 +273,7 @@ export default function DatabasePage() {
           <div className="mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 flex gap-2.5">
             <span className="text-base flex-shrink-0">⚠️</span>
             <div>
-              <strong>Seed initial :</strong> Si la base est vide, clique sur "Seed initial" pour pré-remplir toutes les collections avec les données par défaut.
+              <strong>Seed initial :</strong> Si la base est vide, clique sur &quot;Seed initial&quot; pour pré-remplir toutes les collections avec les données par défaut.
               Ensuite tu peux modifier chaque entrée librement.
             </div>
           </div>
@@ -329,7 +329,7 @@ export default function DatabasePage() {
               <div className="px-6 py-16 text-center">
                 <div className="text-4xl mb-3">{tab.emoji}</div>
                 <div className="font-semibold text-gray-700">Aucune entrée</div>
-                <div className="text-sm text-gray-400 mt-1">Clique sur "Seed initial" ou "Ajouter" pour commencer.</div>
+                <div className="text-sm text-gray-400 mt-1">Clique sur &quot;Seed initial&quot; ou &quot;Ajouter&quot; pour commencer.</div>
               </div>
             ) : (
               <div className="divide-y divide-gray-50">

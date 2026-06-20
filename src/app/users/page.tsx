@@ -381,7 +381,7 @@ export default function UsersPage() {
               </button>
               <button onClick={createUser} disabled={creating}
                 className="flex-1 py-2.5 bg-[#77021D] text-white rounded-xl text-sm font-semibold hover:bg-[#5a0116] disabled:opacity-50">
-                {creating ? "Création..." : "Créer l'utilisateur"}
+                {creating ? "Création..." : "Créer l&apos;utilisateur"}
               </button>
             </div>
           </div>
