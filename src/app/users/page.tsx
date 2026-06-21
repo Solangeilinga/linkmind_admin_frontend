@@ -36,10 +36,7 @@ export default function UsersPage() {
   const [acting,  setActing]  = useState(false);
   const [toast,   setToast]   = useState("");
   const [createModal, setCreateModal] = useState(false);
-  const [createForm, setCreateForm] = useState({
-    email: "", password: "", anonymousAlias: "", age: "",
-    city: "", country: "", gender: "non_specifie"
-  });
+  const [createForm, setCreateForm] = useState({ email: "", password: "", anonymousAlias: "", age: "", city: "", country: "", gender: "non_specifie" });
   const [creating, setCreating] = useState(false);
 
   const showToast = (msg: string, dur = 3000) => { setToast(msg); setTimeout(() => setToast(""), dur); };
@@ -75,28 +72,23 @@ export default function UsersPage() {
     } catch (e: any) { showToast("❌ " + e.message); }
   };
 
-  const createUser = async () => {
-    if (!createForm.email || !createForm.password) {
-      showToast("❌ Email et mot de passe requis"); return;
-    }
-    setCreating(true);
-    try {
-      await api.post("/api/users", {
-        ...createForm,
-        age: createForm.age ? Number(createForm.age) : undefined,
-      });
-      showToast("✅ Utilisateur créé avec succès");
-      setCreateModal(false);
-      setCreateForm({ email: "", password: "", anonymousAlias: "", age: "", city: "", country: "", gender: "non_specifie" });
-      fetchUsers(1);
-    } catch (e: any) { showToast("❌ " + e.message); }
-    finally { setCreating(false); }
-  };
-
   const filters: { key: Filter; label: string }[] = [
     { key: "all", label: "Tous" }, { key: "active", label: "Actifs" },
     { key: "banned", label: "Bannis" }, { key: "new", label: "Nouveaux" },
   ];
+
+  const createUser = async () => {
+    if (!createForm.email || !createForm.password) { showToast("❌ Email et mot de passe requis"); return; }
+    setCreating(true);
+    try {
+      await api.post("/api/users", { ...createForm, age: createForm.age ? Number(createForm.age) : undefined });
+      showToast("✅ Utilisateur créé");
+      setCreateModal(false);
+      setCreateForm({ email: "", password: "", anonymousAlias: "", age: "", city: "", country: "", gender: "non_specifie" });
+      fetchUsers(1);
+    } catch (e: any) { showToast("❌ " + (e.message || "Erreur")); }
+    finally { setCreating(false); }
+  };
 
   return (
     <AuthGuard>
@@ -105,17 +97,22 @@ export default function UsersPage() {
         <main className="ml-64 flex-1 p-8">
 
           {/* Header */}
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-2xl font-bold text-gray-900">Utilisateurs</h1>
-              {/* Badge confidentialité */}
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">
-                🔒 Données anonymisées
-              </span>
+          <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <div className="flex items-center gap-3 mb-1">
+                <h1 className="text-2xl font-bold text-gray-900">Utilisateurs</h1>
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-[#77021D] bg-red-50 border border-red-100 px-2.5 py-1 rounded-full">
+                  🔒 Données anonymisées
+                </span>
+              </div>
+              <p className="text-sm text-gray-500">
+                {pag.total} comptes — les identités réelles ne sont jamais affichées ici.
+              </p>
             </div>
-            <p className="text-sm text-gray-500">
-              {pag.total} comptes — les identités réelles ne sont jamais affichées ici.
-            </p>
+            <button onClick={() => setCreateModal(true)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#77021D] text-white rounded-xl text-sm font-semibold hover:bg-[#5a0116] transition whitespace-nowrap">
+              + Ajouter un utilisateur
+            </button>
           </div>
 
           {/* Bandeau confidentialité */}
@@ -308,7 +305,7 @@ export default function UsersPage() {
           {toast}
         </div>
       )}
-      {/* Modal création utilisateur */}
+      {/* Modal créer utilisateur */}
       {createModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
@@ -316,38 +313,33 @@ export default function UsersPage() {
             <div className="space-y-3">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1">Email *</label>
-                <input type="email" value={createForm.email}
+                <input type="email" value={createForm.email} placeholder="email@exemple.com"
                   onChange={e => setCreateForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
-                  placeholder="email@exemple.com" />
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/20" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1">Mot de passe *</label>
-                <input type="password" value={createForm.password}
+                <input type="password" value={createForm.password} placeholder="Min. 6 caractères"
                   onChange={e => setCreateForm(p => ({ ...p, password: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
-                  placeholder="Min. 6 caractères" />
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/20" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1">Pseudo anonyme</label>
-                <input type="text" value={createForm.anonymousAlias}
+                <input type="text" value={createForm.anonymousAlias} placeholder="Ex: LionCourageux"
                   onChange={e => setCreateForm(p => ({ ...p, anonymousAlias: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
-                  placeholder="Ex: LionCourageux" />
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/20" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1">Âge</label>
-                  <input type="number" value={createForm.age}
+                  <input type="number" value={createForm.age} placeholder="22" min="13" max="120"
                     onChange={e => setCreateForm(p => ({ ...p, age: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
-                    placeholder="22" min="13" max="120" />
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/20" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1">Genre</label>
-                  <select value={createForm.gender}
-                    onChange={e => setCreateForm(p => ({ ...p, gender: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30">
+                  <select value={createForm.gender} onChange={e => setCreateForm(p => ({ ...p, gender: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/20 bg-white">
                     <option value="non_specifie">Non spécifié</option>
                     <option value="homme">Homme</option>
                     <option value="femme">Femme</option>
@@ -357,21 +349,19 @@ export default function UsersPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1">Ville</label>
-                  <input type="text" value={createForm.city}
+                  <input type="text" value={createForm.city} placeholder="Ouagadougou"
                     onChange={e => setCreateForm(p => ({ ...p, city: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
-                    placeholder="Ouagadougou" />
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/20" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1">Pays</label>
-                  <input type="text" value={createForm.country}
+                  <input type="text" value={createForm.country} placeholder="Burkina Faso"
                     onChange={e => setCreateForm(p => ({ ...p, country: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/30"
-                    placeholder="Burkina Faso" />
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#77021D]/20" />
                 </div>
               </div>
               <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-700">
-                ℹ️ L&apos;email sera considéré comme vérifié. L&apos;utilisateur pourra se connecter immédiatement.
+                ℹ️ L&apos;email sera considéré comme vérifié. L&apos;utilisateur peut se connecter immédiatement.
               </div>
             </div>
             <div className="flex gap-3 mt-5">
@@ -381,7 +371,7 @@ export default function UsersPage() {
               </button>
               <button onClick={createUser} disabled={creating}
                 className="flex-1 py-2.5 bg-[#77021D] text-white rounded-xl text-sm font-semibold hover:bg-[#5a0116] disabled:opacity-50">
-                {creating ? "Création..." : "Créer l&apos;utilisateur"}
+                {creating ? "Création..." : "Créer"}
               </button>
             </div>
           </div>
