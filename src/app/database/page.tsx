@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import Sidebar from "@/components/Sidebar";
+import { AdminLayout } from "@/components/AdminLayout";
 import AuthGuard from "@/components/AuthGuard";
 import { api } from "@/lib/api";
 
@@ -344,9 +344,8 @@ export default function DatabasePage() {
 
   return (
     <AuthGuard>
-      <div className="flex min-h-screen bg-[#F5F3F0]">
-        <Sidebar />
-        <main className="ml-64 flex-1 p-8" onClick={() => comboOpen && setComboOpen(null)}>
+      <AdminLayout>
+        <div onClick={() => comboOpen && setComboOpen(null)}>
 
           {/* Header */}
           <div className="flex items-start justify-between mb-6 flex-wrap gap-3">

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Sidebar   from "@/components/Sidebar";
+import { AdminLayout } from "@/components/AdminLayout";
 import AuthGuard from "@/components/AuthGuard";
 import StatCard  from "@/components/ui/StatCard";
 import { api, getAdmin } from "@/lib/api";
@@ -49,9 +49,7 @@ export default function DashboardPage() {
 
   return (
     <AuthGuard>
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <main className="ml-64 flex-1 p-8">
+      <AdminLayout>
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">
@@ -159,8 +157,7 @@ export default function DashboardPage() {
               </div>
             </>
           )}
-        </main>
-      </div>
+        </AdminLayout>
     </AuthGuard>
   );
 }

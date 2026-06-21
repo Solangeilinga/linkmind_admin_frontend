@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import Sidebar   from "@/components/Sidebar";
+import { AdminLayout } from "@/components/AdminLayout";
 import AuthGuard from "@/components/AuthGuard";
 import { api }   from "@/lib/api";
 
@@ -93,9 +93,7 @@ export default function ContentPage() {
 
   return (
     <AuthGuard>
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <main className="ml-64 flex-1 p-8">
+      <AdminLayout>
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Modération du contenu</h1>

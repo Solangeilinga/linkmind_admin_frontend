@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import Sidebar   from "@/components/Sidebar";
+import { AdminLayout } from "@/components/AdminLayout";
 import AuthGuard from "@/components/AuthGuard";
 import { api }   from "@/lib/api";
 
@@ -78,13 +78,11 @@ export default function BookingsPage() {
     try {
       const qs = status !== "all" ? `&status=${status}` : "";
       const [bRes, sRes] = await Promise.all([
-        api.get<any>(`/api/bookings?page=${p}&limit=15${qs}`),
+        api.get<{ bookings: Booking[]; total: number }>(`/api/professionals/bookings/admin?page=${p}&limit=15${qs}`),
         api.get<Stats>("/api/bookings/stats").catch(() => null),
       ]);
-      const list = bRes?.data ?? bRes?.bookings ?? [];
-      const total = bRes?.pagination?.total ?? bRes?.total ?? list.length;
-      setBookings(list);
-      setTotalPages(Math.ceil(total / 15) || 1);
+      setBookings(bRes.bookings);
+      setTotalPages(Math.ceil((bRes.total || 0) / 15) || 1);
       if (sRes) setStats(sRes);
     } catch (e: any) { showToast("❌ " + e.message); }
     finally { setLoading(false); }
@@ -156,7 +154,7 @@ export default function BookingsPage() {
               </span>
             </div>
             <p className="text-sm text-gray-500">
-              Le professionnel confirme directement par email. L&apos;admin supervise et peut annuler si nécessaire.
+              Le professionnel confirme directement par email. L'admin supervise et peut annuler si nécessaire.
             </p>
           </div>
 
@@ -240,7 +238,11 @@ export default function BookingsPage() {
                               {proTypes[b.professional?.type] || b.professional?.type}
                             </span>
                           </div>
-                          <div className="text-xs text-gray-400 mt-0.5 italic">Demande reçue</div>
+                          <div className="text-xs text-gray-500 mt-0.5">
+                            Demande de <strong className="font-mono">{b.user?.displayName}</strong>
+                            {b.user?.city ? ` · 📍 ${b.user.city}` : ""}
+                            {b.user?.age  ? ` · ${b.user.age} ans` : ""}
+                          </div>
                         </div>
                         <span className={`text-xs font-semibold border px-2.5 py-1 rounded-full flex-shrink-0 ${statusColors[b.status]}`}>
                           {statusLabels[b.status] || b.status}
@@ -309,7 +311,21 @@ export default function BookingsPage() {
                           </button>
                         )}
 
+                        {/* Marquer terminé */}
+                        {b.status === "confirmed" && (
+                          <button onClick={() => completeBooking(b)}
+                            className="px-3 py-1.5 text-xs font-semibold text-green-600 bg-green-50 hover:bg-green-100 rounded-xl transition">
+                            ✔ Marquer terminée
+                          </button>
+                        )}
 
+                        {/* Annuler (admin peut annuler pending ou confirmed) */}
+                        {(b.status === "pending" || b.status === "confirmed") && (
+                          <button onClick={() => { setCancelModal(b); setCancelNote(""); }}
+                            className="px-3 py-1.5 text-xs font-semibold text-red-500 bg-red-50 hover:bg-red-100 rounded-xl transition">
+                            ❌ Annuler
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -340,7 +356,7 @@ export default function BookingsPage() {
               <button onClick={() => setLogModal(null)} className="text-gray-400 hover:text-gray-600">✕</button>
             </div>
             <div className="text-xs text-gray-500 mb-4 bg-indigo-50 rounded-xl px-4 py-2.5">
-              Ce journal est interne à LinkMind. Aucun email n&apos;est envoyé aux admins — conformité RGPD.
+              Ce journal est interne à LinkMind. Aucun email n'est envoyé aux admins — conformité RGPD.
             </div>
             <div className="space-y-3">
               {logModal.adminLog?.map((log, i) => (

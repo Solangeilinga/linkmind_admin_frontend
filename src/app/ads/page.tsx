@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import Sidebar   from "@/components/Sidebar";
+import { AdminLayout } from "@/components/AdminLayout";
 import AuthGuard from "@/components/AuthGuard";
 import { api, getAdmin } from "@/lib/api";
 
@@ -97,9 +97,7 @@ export default function AdsPage() {
 
   return (
     <AuthGuard>
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <main className="ml-64 flex-1 p-8">
+      <AdminLayout>
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>

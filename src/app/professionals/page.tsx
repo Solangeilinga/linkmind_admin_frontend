@@ -1,8 +1,7 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar   from "@/components/Sidebar";
+import { AdminLayout } from "@/components/AdminLayout";
 import AuthGuard from "@/components/AuthGuard";
 import { api, getAdmin } from "@/lib/api";
 
@@ -326,7 +325,7 @@ export default function ProfessionalsPage() {
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
                           <div className="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold flex-shrink-0">
-                            {pro.photo ? <Image src={pro.photo} alt="" className="w-full h-full object-cover rounded-xl" width={48} height={48} unoptimized /> : (pro.firstName[0]+pro.lastName[0])}
+                            {pro.photo ? <img src={pro.photo} alt="" className="w-full h-full object-cover rounded-xl"/> : (pro.firstName[0]+pro.lastName[0])}
                           </div>
                           <div>
                             <div className="font-semibold text-gray-900">{pro.firstName} {pro.lastName}</div>

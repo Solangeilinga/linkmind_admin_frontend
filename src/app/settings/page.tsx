@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Sidebar   from "@/components/Sidebar";
+import { AdminLayout } from "@/components/AdminLayout";
 import AuthGuard from "@/components/AuthGuard";
 import { getAdmin, api, saveSession } from "@/lib/api";
 
@@ -61,9 +61,7 @@ export default function SettingsPage() {
 
   return (
     <AuthGuard>
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <main className="ml-64 flex-1 p-8">
+      <AdminLayout>
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Paramètres</h1>
             <p className="text-sm text-gray-500 mt-0.5">Configuration de votre compte administrateur</p>
