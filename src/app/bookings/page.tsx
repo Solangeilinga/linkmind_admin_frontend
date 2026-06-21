@@ -78,11 +78,11 @@ export default function BookingsPage() {
     try {
       const qs = status !== "all" ? `&status=${status}` : "";
       const [bRes, sRes] = await Promise.all([
-        api.get<{ bookings: Booking[]; total: number }>(`/api/professionals/bookings/admin?page=${p}&limit=15${qs}`),
+        api.get<{ data: Booking[]; pagination: any }>(`/api/bookings?page=${p}&limit=15${qs}`),
         api.get<Stats>("/api/bookings/stats").catch(() => null),
       ]);
-      setBookings(bRes.bookings);
-      setTotalPages(Math.ceil((bRes.total || 0) / 15) || 1);
+      setBookings(bRes.data || []);
+      setTotalPages(bRes.pagination?.pages || 1);
       if (sRes) setStats(sRes);
     } catch (e: any) { showToast("❌ " + e.message); }
     finally { setLoading(false); }
@@ -95,7 +95,7 @@ export default function BookingsPage() {
     if (!cancelModal || !cancelNote.trim()) return;
     setSaving(true);
     try {
-      await api.post(`/api/professionals/bookings/${cancelModal._id}/cancel`, { reason: cancelNote });
+      await api.post(`/api/bookings/${cancelModal._id}/cancel`, { reason: cancelNote });
       showToast("✅ Réservation annulée — email envoyé à l'utilisateur.");
       setCancelModal(null); setCancelNote(""); fetchData(page);
     } catch (e: any) { showToast("❌ " + e.message); }
@@ -105,7 +105,7 @@ export default function BookingsPage() {
   const completeBooking = async (b: Booking) => {
     if (!confirm("Marquer cette séance comme terminée ?")) return;
     try {
-      await api.post(`/api/professionals/bookings/${b._id}/complete`, {});
+      await api.patch(`/api/bookings/${b._id}/complete`, {});
       showToast("✅ Séance marquée comme terminée — traçabilité enregistrée.");
       fetchData(page);
     } catch (e: any) { showToast("❌ " + e.message); }
