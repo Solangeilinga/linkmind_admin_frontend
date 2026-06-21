@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
-import AuthGuard from "@/components/AuthGuard";
 import { api } from "@/lib/api";
 
 // ── Catégories prédéfinies ────────────────────────────────────────────────────
@@ -343,8 +342,7 @@ export default function DatabasePage() {
   };
 
   return (
-    <AuthGuard>
-      <AdminLayout>
+    <AdminLayout>
         <div onClick={() => comboOpen && setComboOpen(null)}>
 
           {/* Header */}
@@ -439,6 +437,8 @@ export default function DatabasePage() {
             )}
           </div>
 
+        </div>{/* end outer onClick div */}
+
       {/* Modal créer/modifier */}
       {modal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4"
@@ -487,6 +487,5 @@ export default function DatabasePage() {
         </div>
       )}
     </AdminLayout>
-    </AuthGuard>
   );
 }
