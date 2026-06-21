@@ -52,10 +52,10 @@ export default function UsersPage() {
   const fetchUsers = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const res = await api.get<{ users: User[]; pagination: any }>(
+      const res = await api.get<{ data: User[]; pagination: any }>(
         `/api/users?page=${p}&limit=20&filter=${filter}`
       );
-      setUsers(res.users);
+      setUsers(res.data || []);
       setPag(res.pagination || { page: p, total: 0, pages: 1 });
     } catch (e: any) { showToast("❌ " + e.message); }
     finally { setLoading(false); }
