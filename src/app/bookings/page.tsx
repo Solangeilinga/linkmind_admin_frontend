@@ -152,7 +152,7 @@ export default function BookingsPage() {
               </span>
             </div>
             <p className="text-sm text-gray-500">
-              Le professionnel confirme directement par email. L'admin supervise et peut annuler si nécessaire.
+              Le professionnel confirme directement par email. L&apos;admin supervise et peut annuler si nécessaire.
             </p>
           </div>
 
@@ -352,7 +352,7 @@ export default function BookingsPage() {
               <button onClick={() => setLogModal(null)} className="text-gray-400 hover:text-gray-600">✕</button>
             </div>
             <div className="text-xs text-gray-500 mb-4 bg-indigo-50 rounded-xl px-4 py-2.5">
-              Ce journal est interne à LinkMind. Aucun email n'est envoyé aux admins — conformité RGPD.
+              Ce journal est interne à LinkMind. Aucun email n&apos;est envoyé aux admins — conformité RGPD.
             </div>
             <div className="space-y-3">
               {logModal.adminLog?.map((log, i) => (
