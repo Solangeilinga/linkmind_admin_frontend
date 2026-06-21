@@ -27,44 +27,87 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4">
+    <div className="min-h-screen flex items-center justify-center px-4"
+      style={{ background: "linear-gradient(135deg, #FFF5F7 0%, #FAF7F5 50%, #FFF8EE 100%)" }}>
       <div className="w-full max-w-md">
+
+        {/* Logo + titre */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-3xl mb-4 shadow-lg">🧠</div>
-          <h1 className="text-2xl font-bold text-gray-900">LinkMind Admin</h1>
-          <p className="text-sm text-gray-500 mt-1">Panneau d&apos;administration</p>
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4 shadow-lg overflow-hidden bg-[#77021D]">
+            <Image
+              src="/logo.png"
+              alt="LinkMind"
+              width={80}
+              height={80}
+              className="object-contain"
+              onError={() => {}}
+            />
+          </div>
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight">LinkMind Admin</h1>
+          <p className="text-sm mt-1" style={{ color: "#9A8A8A" }}>Panneau d&apos;administration</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+        {/* Carte */}
+        <div className="bg-white rounded-2xl shadow-xl p-8"
+          style={{ border: "1px solid #EDE0DC" }}>
+
+          {/* Erreur */}
           {error && (
-            <div className="mb-5 flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+            <div className="mb-5 flex items-center gap-2 p-3 rounded-xl text-sm font-medium"
+              style={{ background: "#FEE2E2", border: "1px solid #FCA5A5", color: "#991B1B" }}>
               ⚠️ {error}
             </div>
           )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email administrateur</label>
-              <input type="email" required value={form.email}
+              <label className="block text-sm font-semibold mb-1.5" style={{ color: "#6B6060" }}>
+                Email administrateur
+              </label>
+              <input
+                type="email" required value={form.email}
                 onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                 placeholder="admin@linkmind.app" disabled={loading}
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+                className="w-full px-4 py-2.5 rounded-xl text-sm transition outline-none"
+                style={{ border: "1px solid #EDE0DC", background: "#FAFAFA" }}
+                onFocus={e => e.target.style.boxShadow = "0 0 0 3px rgba(119,2,29,0.15)"}
+                onBlur={e => e.target.style.boxShadow = "none"}
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Mot de passe</label>
-              <input type="password" required value={form.password}
+              <label className="block text-sm font-semibold mb-1.5" style={{ color: "#6B6060" }}>
+                Mot de passe
+              </label>
+              <input
+                type="password" required value={form.password}
                 onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
                 placeholder="••••••••" disabled={loading}
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+                className="w-full px-4 py-2.5 rounded-xl text-sm transition outline-none"
+                style={{ border: "1px solid #EDE0DC", background: "#FAFAFA" }}
+                onFocus={e => e.target.style.boxShadow = "0 0 0 3px rgba(119,2,29,0.15)"}
+                onBlur={e => e.target.style.boxShadow = "none"}
+              />
             </div>
-            <button type="submit" disabled={loading}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 text-white font-semibold text-sm rounded-xl transition">
-              {loading ? "Connexion..." : "Se connecter"}
+            <button
+              type="submit" disabled={loading}
+              className="w-full py-3 font-semibold text-sm rounded-xl transition text-white mt-2"
+              style={{
+                background: loading ? "#D1D5DB" : "linear-gradient(135deg, #77021D 0%, #A00328 100%)",
+                cursor: loading ? "not-allowed" : "pointer",
+              }}>
+              {loading ? "Connexion en cours..." : "Se connecter"}
             </button>
           </form>
-          <p className="text-center text-xs text-gray-400 mt-6">
+
+          <p className="text-center text-xs mt-6" style={{ color: "#9A8A8A" }}>
             🔒 Accès réservé aux administrateurs · Toutes les actions sont enregistrées
           </p>
         </div>
+
+        {/* Footer */}
+        <p className="text-center text-xs mt-6" style={{ color: "#C4B0B0" }}>
+          LinkMind © {new Date().getFullYear()} — Bien-être des jeunes africains
+        </p>
       </div>
     </div>
   );
