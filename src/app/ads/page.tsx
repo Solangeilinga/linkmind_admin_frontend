@@ -202,8 +202,6 @@ export default function AdsPage() {
               ))}
             </div>
           )}
-        </main>
-      </div>
 
       {/* Modal */}
       {modal && (
@@ -318,6 +316,7 @@ export default function AdsPage() {
         </div>
       )}
       {toast && <div className="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-xl text-sm shadow-xl z-50">{toast}</div>}
+    </AdminLayout>
     </AuthGuard>
   );
 }

@@ -172,8 +172,6 @@ export default function ChallengesPage() {
               ))}
             </div>
           )}
-        </main>
-      </div>
 
       {/* Modal créer/modifier */}
       {modal && (
@@ -257,6 +255,7 @@ export default function ChallengesPage() {
       )}
 
       {toast && <div className="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-xl text-sm shadow-xl z-50">{toast}</div>}
+    </AdminLayout>
     </AuthGuard>
   );
 }

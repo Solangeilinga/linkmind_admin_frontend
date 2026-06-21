@@ -249,8 +249,6 @@ export default function ContentPage() {
               )}
             </div>
           )}
-        </main>
-      </div>
 
       {/* Modal confirmation action */}
       {action && (
@@ -294,6 +292,7 @@ export default function ContentPage() {
           {toast}
         </div>
       )}
+    </AdminLayout>
     </AuthGuard>
   );
 }

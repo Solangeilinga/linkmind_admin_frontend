@@ -438,8 +438,6 @@ export default function DatabasePage() {
               </div>
             )}
           </div>
-        </main>
-      </div>
 
       {/* Modal créer/modifier */}
       {modal && (
@@ -488,6 +486,7 @@ export default function DatabasePage() {
           {toast}
         </div>
       )}
+    </AdminLayout>
     </AuthGuard>
   );
 }

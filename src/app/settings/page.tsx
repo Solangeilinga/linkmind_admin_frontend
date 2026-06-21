@@ -173,14 +173,13 @@ export default function SettingsPage() {
               </dl>
             </div>
           </div>
-        </main>
-      </div>
 
       {toast && (
         <div className={`fixed bottom-6 right-6 px-5 py-3 rounded-xl text-sm shadow-xl z-50 text-white ${toastType === "err" ? "bg-red-600" : "bg-gray-900"}`}>
           {toast}
         </div>
       )}
+    </AdminLayout>
     </AuthGuard>
   );
 }

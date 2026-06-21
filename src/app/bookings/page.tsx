@@ -141,9 +141,7 @@ export default function BookingsPage() {
 
   return (
     <AuthGuard>
-      <div className="flex min-h-screen bg-gray-50">
-        <Sidebar />
-        <main className="ml-64 flex-1 p-8">
+      <AdminLayout>
 
           {/* Header */}
           <div className="mb-6">
@@ -344,8 +342,6 @@ export default function BookingsPage() {
               )}
             </div>
           )}
-        </main>
-      </div>
 
       {/* ── Modal Traçabilité admin (en DB, pas de mail) ── */}
       {logModal && (
@@ -412,6 +408,7 @@ export default function BookingsPage() {
           {toast}
         </div>
       )}
+    </AdminLayout>
     </AuthGuard>
   );
 }
