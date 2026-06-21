@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Sidebar   from "@/components/Sidebar";
-import AuthGuard from "@/components/AuthGuard";
+import { AdminLayout } from "@/components/AdminLayout";
 import { api }   from "@/lib/api";
 
 interface Slot { _id: string; date: string; startTime: string; endTime: string; isBooked: boolean; }
@@ -38,13 +37,10 @@ export default function SlotsPage() {
   const showToast = (msg:string,dur=3500) => { setToast(msg); setTimeout(()=>setToast(""),dur); };
 
   const fetchPro = useCallback(async()=>{
-    // Guard: id peut être undefined pendant le premier rendu Next.js (useParams hydration)
-    if (!id || id === "undefined") return;
     setLoading(true);
     try {
       const res = await api.get<any>(`/api/professionals/${id}`);
-      // L'admin backend renvoie { data: pro }, le backend principal renvoie { professional: pro }
-      const p = res.data ?? res.professional ?? res;
+      const p = res.professional||res;
       setPro(p); setMeetingLink(p.personalMeetingLink||""); setMeetingProvider(p.meetingProvider||"jitsi");
     } catch(e:any){ showToast("❌ "+e.message); }
     finally{ setLoading(false); }
@@ -141,13 +137,10 @@ export default function SlotsPage() {
   const totalAvail=(pro?.availableSlots||[]).filter(s=>!s.isBooked).length;
   const totalBooked=(pro?.availableSlots||[]).filter(s=>s.isBooked).length;
 
-  if(loading) return <AuthGuard><div className="flex min-h-screen"><Sidebar/><main className="ml-64 flex-1 flex items-center justify-center"><div className="text-3xl animate-spin">⏳</div></main></div></AuthGuard>;
+  if(loading) return <AdminLayout><div className="flex items-center justify-center min-h-[60vh]"><div className="text-3xl animate-spin">⏳</div></div></AdminLayout>;
 
   return(
-    <AuthGuard>
-      <div className="flex min-h-screen bg-gray-50">
-        <Sidebar/>
-        <main className="ml-64 flex-1 p-8">
+    <AdminLayout>
           <div className="flex items-center gap-3 mb-6">
             <button onClick={()=>router.back()} className="text-gray-400 hover:text-gray-700 text-xl leading-none">←</button>
             <div>
@@ -342,9 +335,7 @@ export default function SlotsPage() {
               </div>
             </div>
           )}
-        </main>
-      </div>
       {toast&&<div className="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-xl text-sm shadow-xl z-50">{toast}</div>}
-    </AuthGuard>
+    </AdminLayout>
   );
 }
