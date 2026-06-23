@@ -138,7 +138,7 @@ function RefuseBookingContent() {
 
               <p className="text-center text-xs mt-4" style={{ color: "#94a3b8" }}>
                 Si vous souhaitez accepter ce rendez-vous, ignorez cette page et
-                utilisez le bouton <strong>Confirmer</strong> dans l'email initial.
+                utilisez le bouton <strong>Confirmer</strong> dans l&apos;email initial.
               </p>
             </>
           )}
