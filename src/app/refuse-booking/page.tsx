@@ -120,7 +120,7 @@ function RefuseBookingContent() {
                     Refus de rendez-vous
                   </p>
                   <p className="text-xs mt-1" style={{ color: "#B91C1C" }}>
-                    Cette action est irréversible. Le patient sera notifié par email
+                    Cette action est irréversible. Le patient sera notifié
                     avec le motif que vous indiquez.
                   </p>
                 </div>
