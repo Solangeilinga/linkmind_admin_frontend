@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -38,7 +39,12 @@ function RefuseBookingContent() {
       setMessage("Le rendez-vous a été refusé. Le patient a été notifié par email.");
     } catch (e: any) {
       setStatus("error");
-      setMessage(e.message || "Une erreur est survenue.");
+      const msg = e.message || "";
+      if (msg.includes("fetch") || msg.includes("network") || msg.includes("Failed")) {
+        setMessage("Impossible de contacter le serveur. Vérifiez votre connexion internet et réessayez.");
+      } else {
+        setMessage(msg || "Une erreur est survenue.");
+      }
     }
   };
 
@@ -49,9 +55,15 @@ function RefuseBookingContent() {
 
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg"
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg overflow-hidden"
             style={{ background: "#77021D" }}>
-            <span className="text-white text-2xl font-black">L</span>
+            <Image
+              src="/logo.png"
+              alt="LinkMind"
+              width={64}
+              height={64}
+              className="object-contain"
+            />
           </div>
           <h1 className="text-xl font-black text-gray-900">LinkMind</h1>
           <p className="text-sm mt-1" style={{ color: "#9A8A8A" }}>Gestion des rendez-vous</p>
@@ -72,15 +84,27 @@ function RefuseBookingContent() {
             </div>
           )}
 
-          {/* Erreur lien invalide */}
+          {/* Erreur */}
           {status === "error" && (
             <div className="text-center">
               <div className="text-5xl mb-4">❌</div>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">Lien invalide</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">
+                {message.includes("connexion") ? "Erreur de connexion" : "Lien invalide"}
+              </h2>
               <p className="text-sm" style={{ color: "#64748b" }}>{message}</p>
-              <p className="text-xs mt-4" style={{ color: "#94a3b8" }}>
-                Ce lien a peut-être déjà été utilisé ou a expiré (48h).
-              </p>
+              {!message.includes("connexion") && (
+                <p className="text-xs mt-4" style={{ color: "#94a3b8" }}>
+                  Ce lien a peut-être déjà été utilisé ou a expiré (48h).
+                </p>
+              )}
+              {message.includes("connexion") && (
+                <button
+                  onClick={() => { setStatus("idle"); setMessage(""); }}
+                  className="mt-4 px-6 py-2 rounded-xl text-sm font-semibold text-white"
+                  style={{ background: "#77021D" }}>
+                  Réessayer
+                </button>
+              )}
             </div>
           )}
 
