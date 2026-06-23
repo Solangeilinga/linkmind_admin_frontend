@@ -31,7 +31,7 @@ interface Booking {
   completedAt?: string;
 }
 interface Stats { pending: number; confirmed: number; cancelled: number; completed: number; total: number; }
-type StatusFilter = "all" | "pending" | "confirmed" | "cancelled" | "completed";
+type StatusFilter = "all" | "pending" | "confirmed" | "cancelled" | "completed" | "no_show";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function fmtDate(iso: string) {
@@ -136,6 +136,7 @@ export default function BookingsPage() {
     { key: "confirmed", label: "Confirmées" },
     { key: "completed", label: "Terminées" },
     { key: "cancelled", label: "Annulées" },
+    { key: "no_show",   label: "Non présentés" },
     { key: "all",       label: "Toutes" },
   ];
 
