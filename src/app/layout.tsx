@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LinkMind Admin",
-  description: "Panneau d'administration LinkMind",
+  title: "BasYam Admin",
+  description: "Panneau d'administration BasYam",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

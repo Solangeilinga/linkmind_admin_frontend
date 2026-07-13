@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-const MAIN_API = process.env.NEXT_PUBLIC_MAIN_API_URL || "https://linkmind-backend-sub4.onrender.com";
+const MAIN_API = process.env.NEXT_PUBLIC_MAIN_API_URL || "https://basyam-backend-sub4.onrender.com";
 
 function RefuseBookingContent() {
   const params      = useSearchParams();
@@ -59,13 +59,13 @@ function RefuseBookingContent() {
             style={{ background: "#77021D" }}>
             <Image
               src="/logo.png"
-              alt="LinkMind"
+              alt="BasYam"
               width={64}
               height={64}
               className="object-contain"
             />
           </div>
-          <h1 className="text-xl font-black text-gray-900">LinkMind</h1>
+          <h1 className="text-xl font-black text-gray-900">BasYam</h1>
           <p className="text-sm mt-1" style={{ color: "#9A8A8A" }}>Gestion des rendez-vous</p>
         </div>
 
@@ -169,7 +169,7 @@ function RefuseBookingContent() {
         </div>
 
         <p className="text-center text-xs mt-6" style={{ color: "#C4B0B0" }}>
-          LinkMind © {new Date().getFullYear()} — Bien-être des jeunes africains
+          BasYam © {new Date().getFullYear()} — Bien-être des jeunes africains
         </p>
       </div>
     </div>

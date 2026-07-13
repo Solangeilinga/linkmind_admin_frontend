@@ -37,14 +37,14 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4 shadow-lg overflow-hidden bg-[#77021D]">
             <Image
               src="/logo.png"
-              alt="LinkMind"
+              alt="BasYam"
               width={80}
               height={80}
               className="object-contain"
               onError={() => {}}
             />
           </div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">LinkMind Admin</h1>
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight">BasYam Admin</h1>
           <p className="text-sm mt-1" style={{ color: "#9A8A8A" }}>Panneau d&apos;administration</p>
         </div>
 
@@ -68,7 +68,7 @@ export default function LoginPage() {
               <input
                 type="email" required value={form.email}
                 onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                placeholder="admin@linkmind.app" disabled={loading}
+                placeholder="admin@basyam.app" disabled={loading}
                 className="w-full px-4 py-2.5 rounded-xl text-sm transition outline-none"
                 style={{ border: "1px solid #EDE0DC", background: "#FAFAFA" }}
                 onFocus={e => e.target.style.boxShadow = "0 0 0 3px rgba(119,2,29,0.15)"}
@@ -130,7 +130,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-xs mt-6" style={{ color: "#C4B0B0" }}>
-          LinkMind © {new Date().getFullYear()} — Bien-être des jeunes africains
+          BasYam © {new Date().getFullYear()} — Bien-être des jeunes africains
         </p>
       </div>
     </div>
