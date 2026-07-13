@@ -82,7 +82,7 @@ export default function Sidebar({ isOpen, onClose }: Props) {
               {/* Logo depuis public/ — remplace /logo.png par le vrai nom de ton fichier */}
               <Image
                 src="/logo.png"
-                alt="BasYam"
+                alt="BASYAM"
                 width={36}
                 height={36}
                 className="object-contain"
@@ -90,7 +90,7 @@ export default function Sidebar({ isOpen, onClose }: Props) {
               />
             </div>
             <div>
-              <div className="font-bold text-white text-sm tracking-tight">BasYam</div>
+              <div className="font-bold text-white text-sm tracking-tight">BASYAM</div>
               <div className="text-[10px] text-gray-500">Administration</div>
             </div>
           </div>

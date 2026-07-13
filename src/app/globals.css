@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design tokens BasYam Admin ──────────────────────────────────────────── */
+/* ── Design tokens BASYAM Admin ──────────────────────────────────────────── */
 :root {
   --primary:       #77021D;
   --primary-light: #A00328;

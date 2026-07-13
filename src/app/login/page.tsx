@@ -37,14 +37,14 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4 shadow-lg overflow-hidden bg-[#77021D]">
             <Image
               src="/logo.png"
-              alt="BasYam"
+              alt="BASYAM"
               width={80}
               height={80}
               className="object-contain"
               onError={() => {}}
             />
           </div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">BasYam Admin</h1>
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight">BASYAM Admin</h1>
           <p className="text-sm mt-1" style={{ color: "#9A8A8A" }}>Panneau d&apos;administration</p>
         </div>
 
@@ -130,7 +130,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-xs mt-6" style={{ color: "#C4B0B0" }}>
-          BasYam © {new Date().getFullYear()} — Bien-être des jeunes africains
+          BASYAM © {new Date().getFullYear()} — Bien-être des jeunes africains
         </p>
       </div>
     </div>

@@ -59,13 +59,13 @@ function RefuseBookingContent() {
             style={{ background: "#77021D" }}>
             <Image
               src="/logo.png"
-              alt="BasYam"
+              alt="BASYAM"
               width={64}
               height={64}
               className="object-contain"
             />
           </div>
-          <h1 className="text-xl font-black text-gray-900">BasYam</h1>
+          <h1 className="text-xl font-black text-gray-900">BASYAM</h1>
           <p className="text-sm mt-1" style={{ color: "#9A8A8A" }}>Gestion des rendez-vous</p>
         </div>
 
@@ -169,7 +169,7 @@ function RefuseBookingContent() {
         </div>
 
         <p className="text-center text-xs mt-6" style={{ color: "#C4B0B0" }}>
-          BasYam © {new Date().getFullYear()} — Bien-être des jeunes africains
+          BASYAM © {new Date().getFullYear()} — Bien-être des jeunes africains
         </p>
       </div>
     </div>
